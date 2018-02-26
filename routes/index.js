@@ -62,7 +62,7 @@ module.exports = function (app, Book) {
   // Update The Book
   app.put('/api/books/:book_id', function (req, res) {
     // findeById메소드를 사용하여 id를 찾아옵니다.  
-    Book.findById({req.params.book_id}, function (err, book) {
+    Book.findById(req.params.book_id, function (err, book) {
       if (err) return res.status(500).json({error: 'database failure'});
       if (!book) return res.status(404).json({error: 'book not found'});
 
