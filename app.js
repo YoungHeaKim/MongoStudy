@@ -12,7 +12,7 @@ const app = express();
 const router = require('./routes')(app, Book);
 
 // port번호를 설정해주는 부분
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 2701;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
