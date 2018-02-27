@@ -92,4 +92,103 @@ Document를 제거할 때에는 `remove(criteria, justOne)`메소드를 사용�
 
 ![](./images/removed.png)  
 
+## Document 조회
+
+Document를 조회할 때에는 `db.collection_Name.find(query, projection)`메소드를 사용하여 조회를 합니다.  
+
+| parameter | type | 설명 |
+|--|--|--|
+| query | document | 선택적입니다. 다큐먼트를 조회할 때 기준을 정합니다. 기준이 없이 컬렉션에 있는 모든 다큐먼트를 조회할 때는 이 매개변수를 비우거나 비어있는 다큐먼트 {}를 전달하세요. |
+| projection | document | 선택적입니다. 다큐먼트를 조회할 때 보여질 field를 정합니다. |
+||||
+
+일단 조회를 하려면 데이터를 추가시켜 주어야하는데요. 이 때에는 `db.collection_Name.insert([{datas}])`를 사용하여 넣어주시면 됩니다.  
+
+![](./images/cre.png)  
+
+위의 사진과 같이 목업데이터를 생성해줍니다. 이제 `find`메소드를 사용하여 document를 조회해보겠습니다.  
+
+![](./images/findD.png)
+
+이번에는 다큐먼트를 깔끔하게 조회를 해볼탠데 이 때에는 `find()`메소드 뒤에 `.pretty()`메소드를 붙여주면 됩니다.  
+
+![](./images/findPretty.png)
+
+원하는 document를 조회해보겠습니다. 이 때는 `find()`메소드의 ()안에 `{key: value}`를 작성해주면 됩니다.  
+
+![](./images/findDocument.png)
+
+위의 사진에서 like가 30이하인 데이터를 가지고 있는 값을 가져오는 query를 사용하였는데 이때 사용된 query `$lte`는 mongoDB에서 사용하는 query비교 연산자 중 하나입니다.  
+
+### MongoDB에서 사용하는 Query연산자를 알아보겠습니다.  
+
+1. 비교 연산자  
+
+| parameter | 설명 |
+|--|--|
+| $eq | (equals) 주어진 값과 일치하는 값 |
+| $gt | (greater than) 주어진 값보다 큰 값 |
+| $gte | (greater than or equals) 주어진 값보다 크거나 같은 값 |
+| $lt | (less than) 주어진 값보다 크거나 같은 값 |
+| $lte | (less than or equals) 주어진 값보다 작거나 같은 값 |
+| $ne | (not equals) 주어진 값과 일치하지 않는 값 |
+| $in | 주어진 배열 안에 속하는 값 |
+| $nin | 주어진 배열 안에 속하지 않는 값 |
+|||
+
+2. 논리 연산자
+
+| parameter | 설명 |
+|--|--|
+| $or | 주어진 조건 중 하나라도 true일 때 true |
+| $and | 주어진 모든 조건이 ture일 때 true|
+| $not | 주어진 조건이 false일 때 true |
+| $nor | 주어진 모든 조건이 false일 때 true |
+|||
+
+3. `$regex` 연산자
+
+`$regex`연산자를 통하여 Document를 정규식을 통해 찾을 수 있습니다.  
+```
+{ <field>: { $regex: /pattern/, $options: '<options>' } }
+{ <field>: { $regex: 'pattern', $options: '<options>' } }
+{ <field>: { $regex: /pattern/<options> } }
+{ <field>: /pattern/<options> }
+```
+위에서 보는것과 같이 `$regex`와 `$options`를 생략하고 사용할 수 있습니다. 여기서 `$options`에 들어가는 것은 아래와 같습니다.  
+
+| option | 설명 |
+|--|--|
+| i | 대소문자 무시 |
+| m | 정규식에서 anchor(^)를 사용할 때 값에 \n이 있다면 무력화 |
+| x | 정규식 안에 있는 whitespace를 모두 무시 |
+| s | dot(.) 사용할 때 \n을 포함해서 매치 |
+|||
+
+![](./images/regex.png)
+
+
+4. `$where` 연산자
+
+`$where`연산자를 통하여 javascript expression을 사용 할 수 있습니다.
+
+5. `$elemMatch` 연산자
+
+`$elemMatch` 연산자는 Embedded Documents 배열을 쿼리할때 사용됩니다. 저희 mock-up data 에서는 comments 가 Embedded Document에 속합니다.  
+
+### MongoDB에서 사용하는 Projection에 대해 알아보도록 하겠습니다.
+
+`find()`메소드의 두번째 parameter인 projection은 쿼리의 결과값에서 보여질 field를 정하는 파라미터입니다.  
+
+![](./images/para.png)
+
+1. `$slice`연산자
+
+projector 연산자 중 $slice 연산자는 Embedded Document 배열을 읽을때 limit 설정을 합니다.  
+
+![](./images/slice.png)  
+
+2. `$elemMatch` 연산자
+
+query 연산자 중 `$elemMatch`와 사용법은 같습니다. 단 역할이 다릅니다.  
 
